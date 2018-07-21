@@ -1,5 +1,5 @@
 {
-	"server_port": 3001,
+	"server_port": 3000,
 	"versions":{
 		"amadeusConnect":"0.1",
 		"dotwConnect":"0.1",
