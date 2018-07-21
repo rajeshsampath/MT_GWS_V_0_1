@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Fahid Mohammad">
+		<meta name="description" content="Amadeus Connect - An highly scaleable Amadeus air restfull service integration module, developed purely on Node.js ">
+		<title>Amadeus Connect</title>
+		<link rel="stylesheet" href="css/selectize.default.css">
+		<link rel="stylesheet" href="css/fonts.css">
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/milligram.css">
+		<link rel="stylesheet" href="fpkr/flatpickr.min.css">
+		<link rel="stylesheet" href="css/main.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		
+	</head>
+	<body>
+
+		<main class="wrapper">
+			<nav class="navigation">
+				<section class="container">
+					<a class="navigation-title" href="#">						
+						<h1 class="title">Amadeus Connect - Example</h1>
+					</a>
+					<ul class="navigation-list float-right">
+						<li class="navigation-item">
+							<a class="navigation-link" href="#popover-grid" data-popover>Docs</a>
+							<div class="popover" id="popover-grid">
+								<ul class="popover-list">
+									<li class="popover-item"><a class="popover-link" href="#" title="Getting Started">Air_TravelBoardSearch</a></li>
+									<li class="popover-item"><a class="popover-link" href="#" title="Typography">Air SellFormRecomendation</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="navigation-item">
+							<a class="navigation-link" href="#" data-popover>Support</a>
+						</li>
+					</ul>
+				</section>
+			</nav>
+
+			<section class="container">
+				<h2>Example</h2>	
+				<h5 class="title">Search</h5>
+			
+				<div>
+					<form>
+					  <fieldset>
+						<div class="row">
+							<div class="column">
+								<div class="tt-radio">
+									<label for="from">One-Way <input type="radio" name="tripType" value="1" checked /> </label>
+									
+								</div>
+								<div class="tt-radio">
+									<label for="from">Round-Trip <input type="radio" name="tripType" value="2" /> </label>
+									
+								</div>
+							</div>														
+						</div>					  
+						<div class="row">
+							<div class="column column-30">
+								<label for="from">From</label>
+								<select id="from">
+									<option value="">Your Departure</option>
+								</select>
+							</div>
+							<div class="column column-30">
+								<label for="to">To</label>
+								<select id="to">
+									<option value="">Your Destination</option>
+								</select>
+							</div>
+							<div class="column column-20">
+								<label for="fromDate">From Date</label>
+								<input placeholder="DD-MM-YYYY" id="fromDate" type="text">
+							</div>
+							<div class="column column-20">
+								<label for="toDate">To Date</label>
+								<input placeholder="DD-MM-YYYY" id="toDate" type="text">
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								<label for="adult">Number of Adult</label>
+								<select id="adult">
+								  <option value="1">1</option>
+								  <option value="2">2</option>
+								  <option value="3">3</option>
+								  <option value="4">4</option>
+								  <option value="5">5</option>
+								  <option value="6">6</option>
+								</select>
+							</div>
+							<div class="column">
+								<label for="child">Number of Child</label>
+								<select id="child">
+								  <option value="0">0</option>
+								  <option value="1">1</option>
+								  <option value="2">2</option>
+								  <option value="3">3</option>
+								  <option value="4">4</option>
+								  <option value="5">5</option>
+								  <option value="6">6</option>
+								</select>
+							</div>
+							<div class="column">
+								<label for="infant">Number of Infant</label>
+								<select id="infant">
+								  <option value="0">0</option>
+								  <option value="1">1</option>
+								  <option value="2">2</option>
+								  <option value="3">3</option>
+								  <option value="4">4</option>
+								  <option value="5">5</option>
+								  <option value="6">6</option>
+								</select>
+							</div>
+							<div class="column">
+								<label for="class">Class Type</label>
+								<select id="class">
+								  <option value="e">Economy</option>
+								  <option value="p">Premium Economy</option>
+								  <option value="b">Business</option>
+								  <option value="f">First Class</option>
+								</select>
+							</div>
+							<div class="column">
+								<label for="search">&nbsp;</label>
+								<button class="button" id="search">Search</button>
+							</div>
+						</div>
+					  </fieldset>
+					</form>
+				</div>				
+			</section>				
+			<!-- Traveller Section Holder -->
+			<section class="container" id="travellerPanel" style="display:none"></section>
+			
+			<!-- Flight Search Section Holder -->
+			<section class="container" id="loadTemplate" style="display:none"></section>	
+
+			<footer class="footer">
+				<section class="container">
+					<p>Developed By <a target="_blank" href="#" title="Fahid Mohammad">Fahid Mohammad</a></p>
+				</section>
+			</footer>
+
+		</main>
+		<script id="travellerPanel-tmpl" type="text/x-handlebars-template">
+			<h2>Traveller Detials</h2>
+			<form id="traveller-form">
+				{{#each traveller}}
+					<fieldset>
+						<div class="row">
+							<div class="column">
+								<h4>Passenger 1  ( {{type}} )</h4>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column column-15">
+								<label>Title</label>
+								<select data-bind="traveller[{{index}}].title">
+								  <option value="Mr">Mr</option>
+								  <option value="Mrs">Mrs</option>
+								  <option value="Miss">Miss</option>
+								  <option value="Mstr">Mstr</option>
+								</select>
+							</div>													
+						</div>
+						<div class="row">
+							<div class="column column-30">
+								<label>First Name</label>
+								<input placeholder="First Name" type="text" data-bind="traveller[{{index}}].first_name">
+							</div>
+							<div class="column column-30">
+								<label>Last Name</label>
+								<input placeholder="Last Name" type="text" data-bind="traveller[{{index}}].last_name">
+							</div>							
+						</div>
+						<div class="row">
+							{{#ifCond index 0}}
+								<div class="column column-30">
+									<label>Email Address</label>
+									<input placeholder="Email Address" type="text" data-bind="traveller[{{index}}].email">
+								</div>
+								<div class="column column-25">
+									<label>Phone Number</label>
+									<input placeholder="Phone Number" type="text" data-bind="traveller[{{index}}].phone">
+								</div>
+							{{/ifCond}}
+							<div class="column column-25">
+								<label>Date Of Birth</label>
+								<input placeholder="Date Of Birth" type="text" data-bind="traveller[{{index}}].dob">
+							</div>						
+						</div>
+						<div class="row">
+							<div class="column column-30">
+								<label>Passport Number</label>
+								<input placeholder="Passpoer Number" type="text" data-bind="traveller[{{index}}].passport_number">
+							</div>							
+							<div class="column column-25">
+								<label>Issue Date</label>
+								<input placeholder="Issue Date" type="text" data-bind="traveller[{{index}}].issue_date">
+							</div>						
+							<div class="column column-25">
+								<label>Expiry Date</label>
+								<input placeholder="Expiry Date" type="text" data-bind="traveller[{{index}}].expiry_date">
+							</div>						
+						</div>
+						<div class="row">							
+							<div class="column column-50">
+								<label>Issuing Country</label>								
+								<select class="select2-element-bindlite" data-bind="traveller[{{index}}].issuing_country">
+										<option value="">--Select Issuing Country--</option>
+									{{#each ../country}}
+										<option value="{{code}}">{{country_name}}</option>
+									{{/each}}
+								</select>
+							</div>	
+							<div class="column column-50">
+								<label>Nationality</label>								
+								<select class="select2-element-bindlite" data-bind="traveller[{{index}}].nationality">
+										<option value="">--Select Nationality--</option>
+									{{#each ../country}}
+										<option value="{{code}}">{{country_name}}</option>
+									{{/each}}
+								</select>
+							</div>						
+						</div>
+					</fieldset>
+				{{/each}}				
+				<div class="row">
+					<div class="column cmpltBkng_btn">
+						<label>&nbsp;</label>
+						<input type="button" class="button" value="Complete Booking" data-event="click:bookFlight" />
+					</div>							
+				</div>
+			</form>
+		</script>
+		
+		<script id="flightResult-tmpl" type="text/x-handlebars-template">
+			<h2>Search Result</h2>
+			<div class="row">
+				<div class="column"><h4>Departure - {{departureDate}}<span></span></h4></div>
+				<div class="column"><h4>Return -  {{returnDate}}</h4></div>
+			</div>
+			
+			{{#each item}}			
+				<div class="main-container row">
+					<div class="item">
+						<div>
+							<img src="https://tjwlcdn.com/img/air/{{departureAirline}}.png" />
+						</div>
+						<div>
+							{{source}} <span>{{dtO}}</span> - <span>{{atO}}</span> {{destination}}
+							{{#if isNextDayO}}
+								<p class="sub">Arrives next day</p>
+							{{/if}}
+						</div>
+						<div>
+							<!--<span>01h 50m, nonstop</span>
+							<p class="sub">09h 40m in  DMM</p>-->
+						</div>
+					</div>
+					{{#if roundTrip}}
+					<div class="item">
+						<div>
+							<img src="https://tjwlcdn.com/img/air/{{returnAirline}}.png" />
+						</div>
+						<div>
+							{{destination}} <span>{{dtR}}</span> - <span>{{atR}}</span> {{source}}
+							{{#if isNextDayR}}
+							<p class="sub">Arrives next day</p>
+							{{/if}}
+						</div>
+						<div>
+							<!--<span>01h 50m, nonstop</span>
+							<p class="sub">09h 40m in  DMM</p>-->
+						</div>
+					</div>
+					{{/if}}
+					<div class="pr_block">
+						SAR <span>{{totalPrice}}</span>
+						<button data-token="{{index}}" class="_getFareresponse">Select Flight</button>
+					</div>	
+				</div>
+			{{/each}}
+		</script>
+		
+		<script id="payment-tmpl" type="text/x-handlebars-template">
+			<h3 class="payment-pnr-title">PNR Generation Success!!</h3>
+			<p class="payment-pnr-p">
+				<a class="button" id="completeTicketing" href="javascript:void(0)" data-key="{{key}}">Proceed to Ticketing</a>
+			</p>			
+		</script>
+		
+		<script id="confirmation-tmpl" type="text/x-handlebars-template">
+			<h3 class="payment-pnr-title">Ticketing Success!!</h3>
+			<p class="payment-pnr-p">
+				{{#each data.ticket}}
+					{{.}} <br />
+				{{/each}}
+			</p>			
+		</script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/handlebars.min.js"></script>
+		<script src="fpkr/flatpickr.min.js"></script>
+		<script src="js/selectize.min.js"></script>
+		<script src="js/BindLite.js"></script>
+		<script src="js/main.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+		
+
+	</body>
+</html>

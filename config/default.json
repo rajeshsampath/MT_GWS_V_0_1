@@ -1,0 +1,10 @@
+{
+	"server_port": 3001,
+	"versions":{
+		"amadeusConnect":"0.1",
+		"dotwConnect":"0.1",
+		"helper":"0.1"
+	},
+	"mongoDBURL":"mongodb://maharah:m%40h%40r%40h@185.139.239.84:27017/dev_db?authSource=admin"
+
+}
